@@ -1,3 +1,8 @@
+# Development note:
+# - macOS host + devcontainer cannot map the host Bluetooth adapter for BLE testing.
+# - Linux host may work with host networking, privileged mode, and /run/dbus mounted.
+# - If BLE discovery fails in-container, run Home Assistant on the host or a Linux machine.
+
 # https://www.home-assistant.io/integrations/default_config/
 default_config:
 
@@ -9,4 +14,4 @@ homeassistant:
 logger:
   default: info
   logs:
-    custom_components.integration_blueprint: debug
+    custom_components.kbeacon_ble: debug

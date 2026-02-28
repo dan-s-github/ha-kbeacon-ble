@@ -1,0 +1,38 @@
+[project]
+name = "ha-kbeacon-ble"
+version = "0.1.0"
+description = "Home Assistant integration for KBeacon BLE devices"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "kbeacon-ble",
+]
+
+[project.optional-dependencies]
+dev = [
+    "aiousbwatcher",
+    "aioesphomeapi>=34.2.1",
+    "colorlog==6.10.1",
+    "dbus-fast",
+    "homeassistant==2025.2.4",
+    "pyserial",
+    "pytest",
+    "pytest-homeassistant-custom-component",
+    "protobuf>=5.29.5,<6.0.0",
+    "pycares<5.0.0",
+    "ruff==0.14.14",
+]
+
+[tool.ruff]
+target-version = "py313"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.hatch.build.targets.wheel]
+packages = ["custom_components/kbeacon_ble"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
