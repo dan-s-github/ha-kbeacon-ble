@@ -43,7 +43,7 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
 ### Manual Installation
 
 1. Download the latest release from the [releases page][releases]
-2. Extract the `custom_components/kbeacon_ble` directory to your Home Assistant's `custom_components` directory
+2. Extract the `custom_components/kbeacon` directory to your Home Assistant's `custom_components` directory
 3. Restart Home Assistant
 
 ## Configuration
@@ -61,9 +61,11 @@ The integration will automatically create sensor entities for:
 
 ## Development (Devcontainer + Bluetooth)
 
+- Run `scripts/setup` once after cloning. It installs dependencies and links `config/custom_components` to the repository `custom_components` directory.
+- Start Home Assistant with `uv run hass -c config`.
 - On macOS hosts, the VS Code devcontainer cannot map the host Bluetooth adapter for Home Assistant BLE testing.
+- On Linux hosts, uncomment the Linux-only `runArgs`/`mounts` block in `.devcontainer/devcontainer.json` to enable host networking and D-Bus passthrough.
 - On Linux hosts, Bluetooth passthrough may work with host networking/privileged mode and a D-Bus mount.
-- This repository includes the required D-Bus mount in [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json).
 - If BLE discovery still does not work in-container, run Home Assistant directly on the host or test on a physical Linux machine.
 
 ## Supported Devices

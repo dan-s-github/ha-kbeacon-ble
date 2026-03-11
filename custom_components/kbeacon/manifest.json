@@ -1,5 +1,5 @@
 {
-  "domain": "kbeacon_ble",
+  "domain": "kbeacon",
   "name": "KBeacon BLE",
   "bluetooth": [
     {

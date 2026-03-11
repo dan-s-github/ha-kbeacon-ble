@@ -14,4 +14,4 @@ homeassistant:
 logger:
   default: info
   logs:
-    custom_components.kbeacon_ble: debug
+    custom_components.kbeacon: debug

@@ -4,12 +4,12 @@
         "dockerfile": "Dockerfile"
     },
     "runArgs": [
-        "--network=host",
-        "--privileged"
+        // "--privileged",
+        "--network=host"
     ],
-    "mounts": [
-        "source=/run/dbus,target=/run/dbus,type=bind,readonly"
-    ],
+    // "mounts": [
+    //     "source=/run/dbus,target=/run/dbus,type=bind,readonly"
+    // ],
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
         8123

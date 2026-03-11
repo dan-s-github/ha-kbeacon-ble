@@ -1,4 +1,4 @@
-"""Config flow for kbeacon_ble integration."""
+"""Config flow for kbeacon integration."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from .const import DOMAIN
 
 
 class KBeaconConfigFlow(ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for kbeacon_ble."""
+    """Handle a config flow for kbeacon."""
 
     VERSION = 1
 
