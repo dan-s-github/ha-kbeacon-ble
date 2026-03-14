@@ -22,7 +22,7 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
 
 ## Requirements
 
-- Home Assistant 2025.2.4 or newer
+- Home Assistant 2025.5.0 or newer
 - Bluetooth adapter (built-in or USB)
 - KBeacon BLE device broadcasting Eddystone telemetry
 

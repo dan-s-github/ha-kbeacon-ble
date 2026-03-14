@@ -73,7 +73,13 @@ class KBeaconConfigFlow(ConfigFlow, domain=DOMAIN):
             )
 
         current_addresses = self._async_current_ids(include_ignore=False)
+        discovered_infos: dict[str, BluetoothServiceInfoBleak] = {}
         for discovery_info in async_discovered_service_info(self.hass, False):
+            discovered_infos[discovery_info.address] = discovery_info
+        for discovery_info in async_discovered_service_info(self.hass, True):
+            discovered_infos.setdefault(discovery_info.address, discovery_info)
+
+        for discovery_info in discovered_infos.values():
             address = discovery_info.address
             if address in current_addresses or address in self._discovered_devices:
                 continue
