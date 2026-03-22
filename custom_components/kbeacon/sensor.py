@@ -17,9 +17,11 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
+    CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
     EntityCategory,
     UnitOfElectricPotential,
+    LIGHT_LUX,
     UnitOfTemperature,
 )
 from homeassistant.helpers.sensor import sensor_device_info_to_hass_device_info
@@ -41,10 +43,35 @@ if TYPE_CHECKING:
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 SENSOR_DESCRIPTIONS = {
+    (KBeaconSensorDeviceClass.BATTERY, Units.PERCENTAGE): SensorEntityDescription(
+        key=f"{KBeaconSensorDeviceClass.BATTERY}_{Units.PERCENTAGE}",
+        device_class=SensorDeviceClass.BATTERY,
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    (
+        KBeaconSensorDeviceClass.CO2,
+        Units.CONCENTRATION_PARTS_PER_MILLION,
+    ): SensorEntityDescription(
+        key=(
+            f"{KBeaconSensorDeviceClass.CO2}_"
+            f"{Units.CONCENTRATION_PARTS_PER_MILLION}"
+        ),
+        device_class=SensorDeviceClass.CO2,
+        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
     (KBeaconSensorDeviceClass.HUMIDITY, Units.PERCENTAGE): SensorEntityDescription(
         key=f"{KBeaconSensorDeviceClass.HUMIDITY}_{Units.PERCENTAGE}",
         device_class=SensorDeviceClass.HUMIDITY,
         native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    (KBeaconSensorDeviceClass.LIGHT, Units.LIGHT_LUX): SensorEntityDescription(
+        key=f"{KBeaconSensorDeviceClass.LIGHT}_{Units.LIGHT_LUX}",
+        device_class=SensorDeviceClass.ILLUMINANCE,
+        native_unit_of_measurement=LIGHT_LUX,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     (

@@ -4,7 +4,6 @@ from uuid import UUID
 
 from bleak.backends.device import BLEDevice
 from bluetooth_data_tools import monotonic_time_coarse
-
 from homeassistant.components.bluetooth import BluetoothServiceInfoBleak
 
 
@@ -60,7 +59,9 @@ KBEACON_SERVICE_INFO = make_bluetooth_service_info(
     name="KBPro_142081",
     address="BC:57:29:02:45:9F",
     rssi=-60,
-    service_data={"0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex("2101070e321b4733b4")},
+    service_data={
+        "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex("2101070e321b4733b4")
+    },
     manufacturer_data={},
     service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
     source="local",
@@ -83,6 +84,36 @@ KBEACON_NEGATIVE_TEMP_SERVICE_INFO = make_bluetooth_service_info(
     address="BC:57:29:02:45:A1",
     rssi=-60,
     service_data={"0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex("210002F600")},
+    manufacturer_data={},
+    service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
+    source="local",
+)
+
+# Test data with FEAA light and CO2 fields
+KBEACON_LUX_CO2_SERVICE_INFO = make_bluetooth_service_info(
+    name="KBPro_CO2",
+    address="BC:57:29:02:45:A2",
+    rssi=-60,
+    service_data={
+        "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex(
+            "2102470E101A003200012C0503E8"
+        )
+    },
+    manufacturer_data={},
+    service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
+    source="local",
+)
+
+# Test data with FEAA system frame (0x22) battery field
+KBEACON_SYSTEM_BATTERY_SERVICE_INFO = make_bluetooth_service_info(
+    name="KBPro_System",
+    address="BC:57:29:02:45:A3",
+    rssi=-60,
+    service_data={
+        "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex(
+            "220161BC57290245A30102"
+        )
+    },
     manufacturer_data={},
     service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
     source="local",

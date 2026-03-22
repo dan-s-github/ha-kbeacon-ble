@@ -4,9 +4,6 @@
   "bluetooth": [
     {
       "connectable": false,
-      "manufacturer_data_start": [
-        33
-      ],
       "service_uuid": "0000feaa-0000-1000-8000-00805f9b34fb"
     }
   ],
