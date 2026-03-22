@@ -22,7 +22,7 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
 
 ## Requirements
 
-- Home Assistant 2025.5.0 or newer
+- Home Assistant 2025.12.0 or newer
 - Bluetooth adapter (built-in or USB)
 - KBeacon BLE device broadcasting Eddystone telemetry
 
@@ -62,9 +62,13 @@ The integration will automatically create sensor entities for:
 ## Development (Devcontainer + Bluetooth)
 
 - Run `scripts/setup` once after cloning. It installs dependencies and links `config/custom_components` to the repository `custom_components` directory.
-- Start Home Assistant with `uv run hass -c config`.
+- Start Home Assistant with `scripts/develop`.
+- Optional direct command: `uv run --group dev hass --config config --debug`.
+- Dependency policy: pin the Home Assistant version we target and rely on its dependency set for transitive packages; avoid manually pinning Home Assistant internals unless there is a documented compatibility break.
+- For Python 3.13 development environments, keep `bluetooth-adapters>=2.1.0` and `habluetooth>=5.7.0` so Home Assistant Bluetooth imports stay compatible.
 - On macOS hosts, the VS Code devcontainer cannot map the host Bluetooth adapter for Home Assistant BLE testing.
-- On Linux hosts, uncomment the Linux-only `runArgs`/`mounts` block in `.devcontainer/devcontainer.json` to enable host networking and D-Bus passthrough.
+- On Linux hosts, configure the devcontainer with `--network=host`, `--cap-add=NET_ADMIN`, and `--cap-add=NET_RAW`; these capabilities are required for Home Assistant Bluetooth adapter management and automatic adapter recovery.
+- On Linux hosts, mount D-Bus (`/run/dbus`) into the devcontainer if you need full adapter introspection and control.
 - On Linux hosts, Bluetooth passthrough may work with host networking/privileged mode and a D-Bus mount.
 - If BLE discovery still does not work in-container, run Home Assistant directly on the host or test on a physical Linux machine.
 
@@ -86,6 +90,24 @@ This integration supports KBeacon BLE devices that broadcast Eddystone telemetry
 - Check the device battery level
 - Ensure the device is within Bluetooth range
 - Review Home Assistant logs for any error messages
+
+### Bluetooth Recovery Warnings In Development
+
+If you see warnings such as `Operation not permitted` from `bluetooth_auto_recovery.recover`, Home Assistant can usually still scan, but it cannot power-cycle the adapter for recovery.
+
+- In a devcontainer, ensure `--network=host`, `--cap-add=NET_ADMIN`, and `--cap-add=NET_RAW` are active, then rebuild/reopen the container.
+- Mount D-Bus (`/run/dbus`) into the container when testing Bluetooth recovery behavior.
+- If you run Home Assistant directly on Linux host, run `sudo scripts/enable-bt-caps` once to grant Bluetooth management capabilities to the interpreter used by this project venv.
+- To roll back host capability changes, run `sudo scripts/disable-bt-caps`.
+
+If logs mention `passive scanning on Linux requires BlueZ >= 5.56 with --experimental enabled`, verify `bluetoothd` is started with `--experimental`.
+
+- Check current service command: `systemctl show bluetooth -p ExecStart --value`
+- If `--experimental` is missing, run `sudo systemctl edit bluetooth` and add:
+  - `[Service]`
+  - `ExecStart=`
+  - `ExecStart=/usr/libexec/bluetooth/bluetoothd --experimental`
+- Apply with `sudo systemctl daemon-reload && sudo systemctl restart bluetooth`
 
 ## Contributing
 

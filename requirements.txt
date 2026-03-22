@@ -1,8 +1,0 @@
-aioesphomeapi>=34.2.1
-colorlog==6.10.1
-homeassistant==2025.5.0
-kbeacon-ble
-protobuf>=5.29.5,<6.0.0
-pycares<5.0.0
-pip>=21.3.1
-ruff==0.15.4
