@@ -118,3 +118,18 @@ KBEACON_SYSTEM_BATTERY_SERVICE_INFO = make_bluetooth_service_info(
     service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
     source="local",
 )
+
+# Test data with FEAA UID frame (0x00) Tx power field
+KBEACON_UID_TX_POWER_SERVICE_INFO = make_bluetooth_service_info(
+    name="KBPro_UID",
+    address="BC:57:29:02:45:A4",
+    rssi=-60,
+    service_data={
+        "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex(
+            "00F4000000000000000000000000000000000000"
+        )
+    },
+    manufacturer_data={},
+    service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
+    source="local",
+)

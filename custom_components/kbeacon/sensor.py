@@ -18,21 +18,16 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
+    LIGHT_LUX,
     PERCENTAGE,
+    SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     EntityCategory,
     UnitOfElectricPotential,
-    LIGHT_LUX,
     UnitOfTemperature,
 )
 from homeassistant.helpers.sensor import sensor_device_info_to_hass_device_info
-
-from kbeacon_ble import (
-    SensorDeviceClass as KBeaconSensorDeviceClass,
-)
-from kbeacon_ble import (
-    SensorUpdate,
-    Units,
-)
+from kbeacon_ble import SensorDeviceClass as KBeaconSensorDeviceClass
+from kbeacon_ble import SensorUpdate, Units
 
 from .const import DOMAIN
 from .device import device_key_to_bluetooth_entity_key
@@ -41,6 +36,8 @@ if TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+UID_TX_POWER_KEY = "uid_tx_power"
 
 SENSOR_DESCRIPTIONS = {
     (KBeaconSensorDeviceClass.BATTERY, Units.PERCENTAGE): SensorEntityDescription(
@@ -96,6 +93,16 @@ SENSOR_DESCRIPTIONS = {
     ),
 }
 
+CUSTOM_SENSOR_DESCRIPTIONS = {
+    UID_TX_POWER_KEY: SensorEntityDescription(
+        key=UID_TX_POWER_KEY,
+        device_class=SensorDeviceClass.SIGNAL_STRENGTH,
+        native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+}
+
 
 def sensor_update_to_bluetooth_data_update(
     sensor_update: SensorUpdate,
@@ -104,10 +111,13 @@ def sensor_update_to_bluetooth_data_update(
     supported_device_keys = {
         device_key
         for device_key, description in sensor_update.entity_descriptions.items()
-        if description.device_class
-        and description.native_unit_of_measurement
-        and (description.device_class, description.native_unit_of_measurement)
-        in SENSOR_DESCRIPTIONS
+        if device_key.key in CUSTOM_SENSOR_DESCRIPTIONS
+        or (
+            description.device_class
+            and description.native_unit_of_measurement
+            and (description.device_class, description.native_unit_of_measurement)
+            in SENSOR_DESCRIPTIONS
+        )
     }
 
     return PassiveBluetoothDataUpdate(
@@ -116,9 +126,13 @@ def sensor_update_to_bluetooth_data_update(
             for device_id, device_info in sensor_update.devices.items()
         },
         entity_descriptions={
-            device_key_to_bluetooth_entity_key(device_key): SENSOR_DESCRIPTIONS[
-                (description.device_class, description.native_unit_of_measurement)
-            ]
+            device_key_to_bluetooth_entity_key(device_key): (
+                CUSTOM_SENSOR_DESCRIPTIONS[device_key.key]
+                if device_key.key in CUSTOM_SENSOR_DESCRIPTIONS
+                else SENSOR_DESCRIPTIONS[
+                    (description.device_class, description.native_unit_of_measurement)
+                ]
+            )
             for device_key, description in sensor_update.entity_descriptions.items()
             if device_key in supported_device_keys
         },

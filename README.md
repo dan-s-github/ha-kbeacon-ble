@@ -8,7 +8,7 @@
 
 Home Assistant integration for KBeacon Bluetooth Low Energy (BLE) devices.
 
-This integration automatically discovers and monitors KBeacon BLE sensors through passive Bluetooth scanning. It supports temperature, humidity, and battery voltage monitoring.
+This integration automatically discovers and monitors KBeacon BLE sensors through passive Bluetooth scanning. It supports temperature, humidity, battery percentage, battery voltage, illuminance, CO2, and UID Tx power monitoring.
 
 ## Features
 
@@ -17,7 +17,11 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
 - **Multiple Sensor Types**:
   - Temperature (°C)
   - Humidity (%)
+  - Battery (%)
   - Battery Voltage (V)
+  - Illuminance (lux)
+  - CO2 (ppm)
+  - UID Tx Power (dBm, diagnostic)
 - **No Configuration Required**: Devices are automatically discovered and added through the UI
 
 ## Requirements
@@ -55,9 +59,16 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
 5. Click **Submit**
 
 The integration will automatically create sensor entities for:
+
 - Temperature
 - Humidity
+- Battery
 - Battery Voltage (disabled by default, can be enabled in entity settings)
+- Illuminance
+- CO2
+- UID Tx Power (disabled by default, can be enabled in entity settings)
+
+Illuminance and CO2 entities are only created after those values are first seen in advertisements from the device. Devices that never advertise light or CO2 data will not get those entities.
 
 ## Development (Devcontainer + Bluetooth)
 
