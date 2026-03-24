@@ -77,6 +77,7 @@ Illuminance and CO2 entities are only created after those values are first seen 
 - Optional direct command: `uv run --group dev hass --config config --debug`.
 - Dependency policy: pin the Home Assistant version we target and rely on its dependency set for transitive packages; avoid manually pinning Home Assistant internals unless there is a documented compatibility break.
 - For Python 3.13 development environments, keep `bluetooth-adapters>=2.1.0` and `habluetooth>=5.7.0` so Home Assistant Bluetooth imports stay compatible.
+- Keep `pycares<5` in the dev dependency group for now; `aiodns` currently expects legacy `pycares.ares_query_*` types and can fail at import time with pycares 5.x.
 - On macOS hosts, the VS Code devcontainer cannot map the host Bluetooth adapter for Home Assistant BLE testing.
 - On Linux hosts, configure the devcontainer with `--network=host`, `--cap-add=NET_ADMIN`, and `--cap-add=NET_RAW`; these capabilities are required for Home Assistant Bluetooth adapter management and automatic adapter recovery.
 - On Linux hosts, mount D-Bus (`/run/dbus`) into the devcontainer if you need full adapter introspection and control.

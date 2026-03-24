@@ -39,6 +39,12 @@ if TYPE_CHECKING:
 
 UID_TX_POWER_KEY = "uid_tx_power"
 
+KBEACON_LIGHT_DEVICE_CLASS = getattr(
+    KBeaconSensorDeviceClass,
+    "LIGHT",
+    getattr(KBeaconSensorDeviceClass, "ILLUMINANCE", None),
+)
+
 SENSOR_DESCRIPTIONS = {
     (KBeaconSensorDeviceClass.BATTERY, Units.PERCENTAGE): SensorEntityDescription(
         key=f"{KBeaconSensorDeviceClass.BATTERY}_{Units.PERCENTAGE}",
@@ -51,10 +57,7 @@ SENSOR_DESCRIPTIONS = {
         KBeaconSensorDeviceClass.CO2,
         Units.CONCENTRATION_PARTS_PER_MILLION,
     ): SensorEntityDescription(
-        key=(
-            f"{KBeaconSensorDeviceClass.CO2}_"
-            f"{Units.CONCENTRATION_PARTS_PER_MILLION}"
-        ),
+        key=(f"{KBeaconSensorDeviceClass.CO2}_{Units.CONCENTRATION_PARTS_PER_MILLION}"),
         device_class=SensorDeviceClass.CO2,
         native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
         state_class=SensorStateClass.MEASUREMENT,
@@ -63,12 +66,6 @@ SENSOR_DESCRIPTIONS = {
         key=f"{KBeaconSensorDeviceClass.HUMIDITY}_{Units.PERCENTAGE}",
         device_class=SensorDeviceClass.HUMIDITY,
         native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    (KBeaconSensorDeviceClass.LIGHT, Units.LIGHT_LUX): SensorEntityDescription(
-        key=f"{KBeaconSensorDeviceClass.LIGHT}_{Units.LIGHT_LUX}",
-        device_class=SensorDeviceClass.ILLUMINANCE,
-        native_unit_of_measurement=LIGHT_LUX,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     (
@@ -102,6 +99,16 @@ CUSTOM_SENSOR_DESCRIPTIONS = {
         entity_registry_enabled_default=False,
     ),
 }
+
+if KBEACON_LIGHT_DEVICE_CLASS is not None:
+    SENSOR_DESCRIPTIONS[(KBEACON_LIGHT_DEVICE_CLASS, Units.LIGHT_LUX)] = (
+        SensorEntityDescription(
+            key=f"{KBEACON_LIGHT_DEVICE_CLASS}_{Units.LIGHT_LUX}",
+            device_class=SensorDeviceClass.ILLUMINANCE,
+            native_unit_of_measurement=LIGHT_LUX,
+            state_class=SensorStateClass.MEASUREMENT,
+        )
+    )
 
 
 def sensor_update_to_bluetooth_data_update(

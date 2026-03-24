@@ -13,5 +13,7 @@ homeassistant:
 # https://www.home-assistant.io/integrations/logger/
 logger:
   default: info
+
   logs:
     custom_components.kbeacon: debug
+    # kbeacon_ble: debug
