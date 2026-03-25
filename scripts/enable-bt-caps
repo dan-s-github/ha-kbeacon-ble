@@ -29,6 +29,8 @@ fi
 setcap cap_net_admin,cap_net_raw+eip "${python_target}"
 
 echo "Applied capabilities to ${python_target}"
-getcap "${python_target}" || true
+if command -v getcap >/dev/null 2>&1; then
+    getcap "${python_target}"
+fi
 
 echo "To remove later: sudo ${PWD}/scripts/disable-bt-caps"
