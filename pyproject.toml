@@ -7,7 +7,7 @@ name = "ha-kbeacon-ble"
 version = "0.1.0"
 description = "Home Assistant integration for KBeacon BLE devices"
 readme = "README.md"
-license = { text = "Apache-2.0" }
+license = { text = "MIT" }
 authors = [
     { name = "Daniel M", email = "daniel@mohni.info" },
 ]
@@ -16,11 +16,10 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Plugins",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
 ]
@@ -47,17 +46,6 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["custom_components/kbeacon"]
-
-[tool.ruff]
-target-version = "py313"
-line-length = 88
-
-[tool.ruff.lint]
-select = ["E", "F", "W", "I", "UP", "RUF"]
-ignore = []
-
-[tool.ruff.lint.isort]
-known-first-party = ["kbeacon"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

@@ -15,6 +15,9 @@ ignore = [
     "ISC001", # incompatible with formatter
 ]
 
+[lint.isort]
+known-first-party = ["custom_components", "tests"]
+
 [lint.flake8-pytest-style]
 fixture-parentheses = false
 

@@ -29,4 +29,8 @@ fi
 setcap -r "${python_target}"
 
 echo "Removed capabilities from ${python_target}"
-getcap "${python_target}" || true
+if command -v getcap >/dev/null 2>&1; then
+    getcap "${python_target}" || true
+else
+    echo "Note: getcap not found; skipping capability verification output."
+fi
