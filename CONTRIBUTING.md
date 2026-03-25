@@ -17,7 +17,7 @@ Pull requests are the best way to propose changes to the codebase.
 2. If you've changed something, update the documentation.
 3. Make sure your code lints (using `scripts/lint`).
 4. Install and run hooks: `uv run --group dev pre-commit install` and `uv run --group dev pre-commit run -a`.
-5. Test you contribution.
+5. Test your contribution.
 6. Issue that pull request!
 
 ## Any contributions you make will be under the MIT Software License
