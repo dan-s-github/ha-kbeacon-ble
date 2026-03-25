@@ -110,9 +110,7 @@ KBEACON_SYSTEM_BATTERY_SERVICE_INFO = make_bluetooth_service_info(
     address="BC:57:29:02:45:A3",
     rssi=-60,
     service_data={
-        "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex(
-            "220161BC57290245A30102"
-        )
+        "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex("220161BC57290245A30102")
     },
     manufacturer_data={},
     service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],

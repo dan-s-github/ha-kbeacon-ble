@@ -3,7 +3,6 @@
 from unittest.mock import patch
 
 import pytest
-
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
@@ -29,9 +28,7 @@ async def test_async_step_bluetooth_valid_device(hass: HomeAssistant) -> None:
     )
     assert result["type"] is FlowResultType.FORM
     assert result["step_id"] == "bluetooth_confirm"
-    with patch(
-        "custom_components.kbeacon.async_setup_entry", return_value=True
-    ):
+    with patch("custom_components.kbeacon.async_setup_entry", return_value=True):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"], user_input={}
         )
@@ -74,9 +71,7 @@ async def test_async_step_user_with_found_devices(hass: HomeAssistant) -> None:
         )
     assert result["type"] is FlowResultType.FORM
     assert result["step_id"] == "user"
-    with patch(
-        "custom_components.kbeacon.async_setup_entry", return_value=True
-    ):
+    with patch("custom_components.kbeacon.async_setup_entry", return_value=True):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"],
             user_input={"address": "BC:57:29:02:45:9F"},
@@ -106,9 +101,7 @@ async def test_async_step_user_device_added_between_steps(hass: HomeAssistant) -
     )
     entry.add_to_hass(hass)
 
-    with patch(
-        "custom_components.kbeacon.async_setup_entry", return_value=True
-    ):
+    with patch("custom_components.kbeacon.async_setup_entry", return_value=True):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"],
             user_input={"address": "BC:57:29:02:45:9F"},
@@ -197,9 +190,7 @@ async def test_async_step_user_takes_precedence_over_discovery(
         )
         assert result["type"] is FlowResultType.FORM
 
-    with patch(
-        "custom_components.kbeacon.async_setup_entry", return_value=True
-    ):
+    with patch("custom_components.kbeacon.async_setup_entry", return_value=True):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"],
             user_input={"address": "BC:57:29:02:45:9F"},
