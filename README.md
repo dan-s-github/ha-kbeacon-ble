@@ -34,15 +34,9 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
 
 ### HACS (Recommended)
 
-1. Open HACS in Home Assistant
-2. Go to "Integrations"
-3. Click the three dots in the top right corner
-4. Select "Custom repositories"
-5. Add this repository URL: `https://github.com/dan-s-github/ha-kbeacon-ble`
-6. Select category "Integration"
-7. Click "Add"
-8. Find "KBeacon BLE" in the integration list and click "Download"
-9. Restart Home Assistant
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=dan-s-github&repository=ha-kbeacon-ble&category=Integration)
+
+"Download" and Restart Home Assistant
 
 ### Manual Installation
 
