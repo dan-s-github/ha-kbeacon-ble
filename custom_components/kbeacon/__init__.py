@@ -3,18 +3,20 @@
 from __future__ import annotations
 
 import logging
-
-from kbeacon_ble import KBeaconBluetoothDeviceData
+from typing import TYPE_CHECKING
 
 from homeassistant.components.bluetooth import BluetoothScanningMode
 from homeassistant.components.bluetooth.passive_update_processor import (
     PassiveBluetoothProcessorCoordinator,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
-from homeassistant.core import HomeAssistant
+from kbeacon_ble import KBeaconBluetoothDeviceData
 
 from .const import DOMAIN
+
+if TYPE_CHECKING:
+    from homeassistant.config_entries import ConfigEntry
+    from homeassistant.core import HomeAssistant
 
 PLATFORMS: list[Platform] = [Platform.SENSOR]
 
@@ -24,7 +26,8 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up KBeacon BLE device from a config entry."""
     address = entry.unique_id
-    assert address is not None
+    if address is None:
+        return False
     data = KBeaconBluetoothDeviceData()
     coordinator = hass.data.setdefault(DOMAIN, {})[entry.entry_id] = (
         PassiveBluetoothProcessorCoordinator(

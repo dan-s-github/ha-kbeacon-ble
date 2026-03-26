@@ -12,5 +12,14 @@ if ! command -v uv &> /dev/null; then
 fi
 
 # Sync dependencies including dev dependencies
-uv sync --all-extras
+uv sync --group dev
+
+# Install Git hooks for local quality checks
+uv run --group dev pre-commit install
+
+# Ensure Home Assistant config can find local custom integrations
+mkdir -p "${PWD}/config"
+if [[ ! -e "${PWD}/config/custom_components" ]]; then
+    ln -s ../custom_components "${PWD}/config/custom_components"
+fi
 

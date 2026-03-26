@@ -16,8 +16,9 @@ Pull requests are the best way to propose changes to the codebase.
 1. Fork the repo and create your branch from `main`.
 2. If you've changed something, update the documentation.
 3. Make sure your code lints (using `scripts/lint`).
-4. Test you contribution.
-5. Issue that pull request!
+4. Install and run hooks: `uv run --group dev pre-commit install` and `uv run --group dev pre-commit run -a`.
+5. Test your contribution.
+6. Issue that pull request!
 
 ## Any contributions you make will be under the MIT Software License
 
@@ -44,7 +45,7 @@ People *love* thorough bug reports. I'm not even kidding.
 
 ## Use a Consistent Coding Style
 
-Use [black](https://github.com/ambv/black) to make sure the code follows the style.
+Use Ruff formatting and linting (`scripts/lint` or pre-commit) to keep style consistent.
 
 ## Test your code modification
 

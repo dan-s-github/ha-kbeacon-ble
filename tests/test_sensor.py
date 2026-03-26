@@ -1,12 +1,13 @@
 """Test the KBeacon BLE sensors."""
 
 import pytest
-
 from homeassistant.components.bluetooth import async_get_advertisement_callback
 from homeassistant.components.sensor import ATTR_STATE_CLASS
 from homeassistant.const import (
     ATTR_FRIENDLY_NAME,
     ATTR_UNIT_OF_MEASUREMENT,
+    CONCENTRATION_PARTS_PER_MILLION,
+    LIGHT_LUX,
     PERCENTAGE,
     UnitOfElectricPotential,
     UnitOfTemperature,
@@ -15,12 +16,16 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.kbeacon_ble.const import DOMAIN
+from custom_components.kbeacon.const import DOMAIN
 
 from . import (
+    KBEACON_LUX_CO2_SERVICE_INFO,
     KBEACON_NEGATIVE_TEMP_SERVICE_INFO,
     KBEACON_SERVICE_INFO,
+    KBEACON_SYSTEM_BATTERY_SERVICE_INFO,
+    KBEACON_UID_TX_POWER_SERVICE_INFO,
     KBEACON_VOLTAGE_ONLY_SERVICE_INFO,
+    make_bluetooth_service_info,
 )
 
 
@@ -90,7 +95,9 @@ async def test_sensors(hass: HomeAssistant) -> None:
     voltage_sensor_attrs = voltage_sensor.attributes
     assert voltage_sensor.state == "3.634"
     assert voltage_sensor_attrs[ATTR_FRIENDLY_NAME] == "KBeacon 459F Voltage"
-    assert voltage_sensor_attrs[ATTR_UNIT_OF_MEASUREMENT] == UnitOfElectricPotential.VOLT
+    assert (
+        voltage_sensor_attrs[ATTR_UNIT_OF_MEASUREMENT] == UnitOfElectricPotential.VOLT
+    )
     assert voltage_sensor_attrs[ATTR_STATE_CLASS] == "measurement"
 
     assert await hass.config_entries.async_unload(entry.entry_id)
@@ -173,12 +180,13 @@ async def test_sensor_update_on_new_advertisement(hass: HomeAssistant) -> None:
 
     # Inject new advertisement with different temperature
     # Temperature 20C = 5120 raw = 0x1400
-    from . import make_bluetooth_service_info
     updated_service_info = make_bluetooth_service_info(
         name="KBPro_142081",
         address="BC:57:29:02:45:9F",
         rssi=-60,
-        service_data={"0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex("2100021400")},
+        service_data={
+            "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex("2100021400")
+        },
         manufacturer_data={},
         service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
         source="local",
@@ -189,6 +197,93 @@ async def test_sensor_update_on_new_advertisement(hass: HomeAssistant) -> None:
 
     temp_sensor = hass.states.get("sensor.kbeacon_459f_temperature")
     assert temp_sensor.state == "20.0"
+
+    assert await hass.config_entries.async_unload(entry.entry_id)
+    await hass.async_block_till_done()
+
+
+async def test_lux_and_co2_sensors(hass: HomeAssistant) -> None:
+    """Test device broadcasting FEAA light and CO2 fields."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id="BC:57:29:02:45:A2",
+    )
+    entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    inject_bluetooth_service_info(hass, KBEACON_LUX_CO2_SERVICE_INFO)
+    await hass.async_block_till_done()
+
+    # Temperature, humidity, light, and CO2 are enabled by default.
+    assert len(hass.states.async_all("sensor")) == 4
+
+    lux_sensor = hass.states.get("sensor.kbeacon_45a2_illuminance")
+    assert lux_sensor is not None
+    assert lux_sensor.state == "300"
+    assert lux_sensor.attributes[ATTR_UNIT_OF_MEASUREMENT] == LIGHT_LUX
+
+    co2_sensor = hass.states.get("sensor.kbeacon_45a2_carbon_dioxide")
+    assert co2_sensor is not None
+    assert co2_sensor.state == "1000"
+    assert (
+        co2_sensor.attributes[ATTR_UNIT_OF_MEASUREMENT]
+        == CONCENTRATION_PARTS_PER_MILLION
+    )
+
+    assert await hass.config_entries.async_unload(entry.entry_id)
+    await hass.async_block_till_done()
+
+
+async def test_system_battery_sensor(hass: HomeAssistant) -> None:
+    """Test device broadcasting FEAA system-frame battery field."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id="BC:57:29:02:45:A3",
+    )
+    entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    inject_bluetooth_service_info(hass, KBEACON_SYSTEM_BATTERY_SERVICE_INFO)
+    await hass.async_block_till_done()
+
+    battery_sensor = hass.states.get("sensor.kbeacon_45a3_battery")
+    assert battery_sensor is not None
+    assert battery_sensor.state == "97"
+    assert battery_sensor.attributes[ATTR_UNIT_OF_MEASUREMENT] == PERCENTAGE
+
+    assert await hass.config_entries.async_unload(entry.entry_id)
+    await hass.async_block_till_done()
+
+
+async def test_uid_tx_power_sensor(hass: HomeAssistant) -> None:
+    """Test device broadcasting FEAA UID Tx power field."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id="BC:57:29:02:45:A4",
+    )
+    entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    inject_bluetooth_service_info(hass, KBEACON_UID_TX_POWER_SERVICE_INFO)
+    await hass.async_block_till_done()
+
+    assert hass.states.get("sensor.kbeacon_45a4_uid_tx_power") is None
+
+    enable_entity(hass, "sensor.kbeacon_45a4_uid_tx_power")
+    await reload_entry(hass, entry)
+    inject_bluetooth_service_info(hass, KBEACON_UID_TX_POWER_SERVICE_INFO)
+    await hass.async_block_till_done()
+
+    uid_tx_power_sensor = hass.states.get("sensor.kbeacon_45a4_uid_tx_power")
+    assert uid_tx_power_sensor is not None
+    assert uid_tx_power_sensor.state == "-12"
+    assert uid_tx_power_sensor.attributes[ATTR_UNIT_OF_MEASUREMENT] == "dBm"
 
     assert await hass.config_entries.async_unload(entry.entry_id)
     await hass.async_block_till_done()

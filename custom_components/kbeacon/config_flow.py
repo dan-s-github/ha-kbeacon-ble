@@ -1,24 +1,23 @@
-"""Config flow for kbeacon_ble integration."""
+"""Config flow for kbeacon integration."""
 
 from __future__ import annotations
 
 from typing import Any
 
-from kbeacon_ble import KBeaconBluetoothDeviceData as DeviceData
 import voluptuous as vol
-
 from homeassistant.components.bluetooth import (
     BluetoothServiceInfoBleak,
     async_discovered_service_info,
 )
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_ADDRESS
+from kbeacon_ble import KBeaconBluetoothDeviceData as DeviceData
 
 from .const import DOMAIN
 
 
 class KBeaconConfigFlow(ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for kbeacon_ble."""
+    """Handle a config flow for kbeacon."""
 
     VERSION = 1
 
@@ -45,9 +44,10 @@ class KBeaconConfigFlow(ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Confirm discovery."""
-        assert self._discovered_device is not None
+        if self._discovered_device is None or self._discovery_info is None:
+            return self.async_abort(reason="not_supported")
+
         device = self._discovered_device
-        assert self._discovery_info is not None
         discovery_info = self._discovery_info
         title = device.title or device.get_device_name() or discovery_info.name
         if user_input is not None:
@@ -73,7 +73,12 @@ class KBeaconConfigFlow(ConfigFlow, domain=DOMAIN):
             )
 
         current_addresses = self._async_current_ids(include_ignore=False)
-        for discovery_info in async_discovered_service_info(self.hass, False):
+        discovered_infos: dict[str, BluetoothServiceInfoBleak] = {}
+        for connectable in (False, True):
+            for discovery_info in async_discovered_service_info(self.hass, connectable):
+                discovered_infos.setdefault(discovery_info.address, discovery_info)
+
+        for discovery_info in discovered_infos.values():
             address = discovery_info.address
             if address in current_addresses or address in self._discovered_devices:
                 continue
