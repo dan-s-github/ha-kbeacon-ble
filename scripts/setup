@@ -4,11 +4,20 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-# Install uv package manager if not already installed
+UV_REQUIRED_VERSION="0.10.6"
+
+# Install or update uv package manager to the pinned version
 if ! command -v uv &> /dev/null; then
     echo "Installing uv..."
-    python3 -m pip install --user "uv==0.10.6"
+    python3 -m pip install --user "uv==${UV_REQUIRED_VERSION}"
     export PATH="$HOME/.local/bin:$PATH"
+else
+    UV_CURRENT_VERSION="$(uv --version | awk '{print $2}')"
+    if [[ "${UV_CURRENT_VERSION}" != "${UV_REQUIRED_VERSION}" ]]; then
+        echo "Updating uv from ${UV_CURRENT_VERSION} to ${UV_REQUIRED_VERSION}..."
+        python3 -m pip install --user "uv==${UV_REQUIRED_VERSION}"
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
 fi
 
 # Sync dependencies including dev dependencies

@@ -26,8 +26,8 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
 
 ## Requirements
 
-- Home Assistant 2026.3.0 or newer
-- Python 3.14 or newer
+- Home Assistant 2026.3.1 or newer
+- Python 3.14.2 or newer
 - Bluetooth adapter (built-in or USB)
 - KBeacon BLE device broadcasting Eddystone telemetry
 
@@ -74,7 +74,7 @@ Illuminance and CO2 entities are only created after those values are first seen 
 - Run type checks with `uv run --group dev mypy custom_components`.
 - Run all pre-commit checks with `pre-commit run --all-files`.
 - Dependency policy: pin the Home Assistant version we target and rely on its dependency set for transitive packages; avoid manually pinning Home Assistant internals unless there is a documented compatibility break.
-- Keep `pycares>=5.0.0,<6` in the dev dependency group; Home Assistant 2026.3.0 requires pycares 5.x.
+- Keep `pycares>=5.0.0,<6` in the dev dependency group; Home Assistant 2026.3.1 requires pycares 5.x.
 - On macOS hosts, the VS Code devcontainer cannot map the host Bluetooth adapter for Home Assistant BLE testing.
 - On Linux hosts, configure the devcontainer with `--network=host`, `--cap-add=NET_ADMIN`, and `--cap-add=NET_RAW`; these capabilities are required for Home Assistant Bluetooth adapter management and automatic adapter recovery.
 - On Linux hosts, mount D-Bus (`/run/dbus`) into the devcontainer if you need full adapter introspection and control.
