@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 # Install uv package manager if not already installed
 if ! command -v uv &> /dev/null; then
     echo "Installing uv..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+    python3 -m pip install --user "uv==0.10.6"
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
@@ -22,4 +22,3 @@ mkdir -p "${PWD}/config"
 if [[ ! -e "${PWD}/config/custom_components" ]]; then
     ln -s ../custom_components "${PWD}/config/custom_components"
 fi
-
