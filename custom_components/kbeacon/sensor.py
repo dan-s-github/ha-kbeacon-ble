@@ -139,7 +139,7 @@ def sensor_update_to_bluetooth_data_update(
                 if device_key.key in CUSTOM_SENSOR_DESCRIPTIONS
                 else SENSOR_DESCRIPTIONS[
                     cast(
-                        "tuple[SensorDeviceClass, Units]",
+                        "tuple[KBeaconSensorDeviceClass, Units]",
                         (
                             description.device_class,
                             description.native_unit_of_measurement,
