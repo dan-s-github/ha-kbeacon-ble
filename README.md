@@ -22,11 +22,12 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
   - Illuminance (lux)
   - CO2 (ppm)
   - UID Tx Power (dBm, diagnostic)
-- **No Configuration Required**: Devices are automatically discovered and added through the UI
+- **No YAML Configuration Required**: Devices are discovered through Bluetooth and added with the UI flow
 
 ## Requirements
 
-- Home Assistant 2025.12.0 or newer
+- Home Assistant 2026.3.1 or newer
+- Python 3.14.2 or newer
 - Bluetooth adapter (built-in or USB)
 - KBeacon BLE device broadcasting Eddystone telemetry
 
@@ -69,9 +70,11 @@ Illuminance and CO2 entities are only created after those values are first seen 
 - Run `scripts/setup` once after cloning. It installs dependencies and links `config/custom_components` to the repository `custom_components` directory.
 - Start Home Assistant with `scripts/develop`.
 - Optional direct command: `uv run --group dev hass --config config --debug`.
+- Run tests with `uv run --group dev pytest`.
+- Run type checks with `uv run --group dev mypy custom_components`.
+- Run all pre-commit checks with `pre-commit run --all-files`.
 - Dependency policy: pin the Home Assistant version we target and rely on its dependency set for transitive packages; avoid manually pinning Home Assistant internals unless there is a documented compatibility break.
-- For Python 3.13 development environments, keep `bluetooth-adapters>=2.1.0` and `habluetooth>=5.7.0` so Home Assistant Bluetooth imports stay compatible.
-- Keep `pycares<5` in the dev dependency group for now; `aiodns` currently expects legacy `pycares.ares_query_*` types and can fail at import time with pycares 5.x.
+- Keep `pycares>=5.0.0,<6` in the dev dependency group; Home Assistant 2026.3.1 requires pycares 5.x.
 - On macOS hosts, the VS Code devcontainer cannot map the host Bluetooth adapter for Home Assistant BLE testing.
 - On Linux hosts, configure the devcontainer with `--network=host`, `--cap-add=NET_ADMIN`, and `--cap-add=NET_RAW`; these capabilities are required for Home Assistant Bluetooth adapter management and automatic adapter recovery.
 - On Linux hosts, mount D-Bus (`/run/dbus`) into the devcontainer if you need full adapter introspection and control.

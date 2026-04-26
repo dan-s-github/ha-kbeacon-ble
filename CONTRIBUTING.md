@@ -7,9 +7,9 @@ Contributing to this project should be as easy and transparent as possible, whet
 - Submitting a fix
 - Proposing new features
 
-## Github is used for everything
+## GitHub is used for everything
 
-Github is used to host code, to track issues and feature requests, as well as accept pull requests.
+GitHub is used to host code, to track issues and feature requests, as well as accept pull requests.
 
 Pull requests are the best way to propose changes to the codebase.
 
@@ -20,11 +20,36 @@ Pull requests are the best way to propose changes to the codebase.
 5. Test your contribution.
 6. Issue that pull request!
 
+### Commit message linting
+
+This repository enforces Conventional Commits via pre-commit at commit-message time.
+
+Use commit messages in this format:
+
+- `type: short summary`
+- `type(scope): short summary`
+
+Examples:
+
+- `feat: add support for connectable advertisements`
+- `fix(sensor): ignore invalid temperature payload`
+- `chore: bump kbeacon-ble to 1.0.0`
+
+### Releases
+
+Releases are managed with Commitizen and a dedicated GitHub Actions workflow.
+
+- Version source of truth: `project.version` in `pyproject.toml`
+- Synced file: `custom_components/kbeacon/manifest.json` `version` field
+- Tag format: `vX.Y.Z`
+
+To cut a release, run the `Release` workflow from Actions and choose the increment (`PATCH`, `MINOR`, or `MAJOR`).
+
 ## Any contributions you make will be under the MIT Software License
 
 In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using Github's [issues](../../issues)
+## Report bugs using GitHub's [issues](../../issues)
 
 GitHub issues are used to track public bugs.
 Report a bug by [opening a new issue](../../issues/new/choose); it's that easy!
@@ -50,13 +75,12 @@ Use Ruff formatting and linting (`scripts/lint` or pre-commit) to keep style con
 ## Test your code modification
 
 This custom component is based on [integration_blueprint template](https://github.com/ludeeus/integration_blueprint).
-For the actual KBeacon BLE integration, see [ha-kbeacon-ble](https://github.com/dan-s-github/ha-kbeacon-ble).
+For the KBeacon BLE integration repository, see [ha-kbeacon-ble](https://github.com/dan-s-github/ha-kbeacon-ble).
 
 It comes with development environment in a container, easy to launch
 if you use Visual Studio Code. With this container you will have a stand alone
-Home Assistant instance running and already configured with the included
-[`configuration.yaml`](./config/configuration.yaml)
-file.
+Home Assistant instance running and configured for development within the
+container environment.
 
 **Note:** The devcontainer will not allow mapping the host Bluetooth adapter on macOS, but it might work on a Linux host. For full Bluetooth testing, you may need to run Home Assistant directly on the host machine or use a physical device.
 
