@@ -19,6 +19,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.kbeacon.const import DOMAIN
 
 from . import (
+    KBEACON_ACCEL_DIAGNOSTICS_SERVICE_INFO,
     KBEACON_LUX_CO2_SERVICE_INFO,
     KBEACON_NEGATIVE_TEMP_SERVICE_INFO,
     KBEACON_SERVICE_INFO,
@@ -284,6 +285,63 @@ async def test_uid_tx_power_sensor(hass: HomeAssistant) -> None:
     assert uid_tx_power_sensor is not None
     assert uid_tx_power_sensor.state == "-12"
     assert uid_tx_power_sensor.attributes[ATTR_UNIT_OF_MEASUREMENT] == "dBm"
+
+    assert await hass.config_entries.async_unload(entry.entry_id)
+    await hass.async_block_till_done()
+
+
+async def test_accel_and_diagnostic_sensors(hass: HomeAssistant) -> None:
+    """Test device broadcasting acceleration and diagnostic fields."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id="BC:57:29:02:45:A5",
+    )
+    entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    inject_bluetooth_service_info(hass, KBEACON_ACCEL_DIAGNOSTICS_SERVICE_INFO)
+    await hass.async_block_till_done()
+
+    # Acceleration and unread records are enabled by default; the unread
+    # records flags, the reserved field, and the tick counter are disabled.
+    assert len(hass.states.async_all("sensor")) == 4
+
+    unread_records_sensor = hass.states.get("sensor.kbeacon_45a5_unread_records")
+    assert unread_records_sensor is not None
+    assert unread_records_sensor.state == "5"
+
+    for entity_id in (
+        "sensor.kbeacon_45a5_unread_records_flags",
+        "sensor.kbeacon_45a5_sensor_reserved_field",
+        "sensor.kbeacon_45a5_sensor_tick_counter",
+    ):
+        enable_entity(hass, entity_id)
+    await reload_entry(hass, entry)
+    inject_bluetooth_service_info(hass, KBEACON_ACCEL_DIAGNOSTICS_SERVICE_INFO)
+    await hass.async_block_till_done()
+
+    assert len(hass.states.async_all("sensor")) == 7
+
+    accel_x = hass.states.get("sensor.kbeacon_45a5_acceleration_x")
+    assert accel_x.state == "0.981"
+    assert accel_x.attributes[ATTR_UNIT_OF_MEASUREMENT] == "m/s²"
+
+    accel_y = hass.states.get("sensor.kbeacon_45a5_acceleration_y")
+    assert accel_y.state == "-0.49"
+
+    accel_z = hass.states.get("sensor.kbeacon_45a5_acceleration_z")
+    assert accel_z.state == "9.611"
+
+    unread_records_flags = hass.states.get("sensor.kbeacon_45a5_unread_records_flags")
+    assert unread_records_flags.state == "1"
+
+    reserved_field = hass.states.get("sensor.kbeacon_45a5_sensor_reserved_field")
+    assert reserved_field.state == "0"
+
+    tick_counter = hass.states.get("sensor.kbeacon_45a5_sensor_tick_counter")
+    assert tick_counter.state == "42"
 
     assert await hass.config_entries.async_unload(entry.entry_id)
     await hass.async_block_till_done()

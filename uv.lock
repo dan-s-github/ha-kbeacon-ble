@@ -1009,7 +1009,7 @@ wheels = [
 
 [[package]]
 name = "ha-kbeacon-ble"
-version = "0.1.0"
+version = "1.0.0rc0"
 source = { editable = "." }
 dependencies = [
     { name = "kbeacon-ble" },
@@ -1302,7 +1302,7 @@ wheels = [
 
 [[package]]
 name = "kbeacon-ble"
-version = "1.0.0rc4"
+version = "1.0.0rc5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "bluetooth-data-tools" },
@@ -1310,9 +1310,9 @@ dependencies = [
     { name = "habluetooth" },
     { name = "sensor-state-data" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/63/e3/ba227c1d93a9c0b84fcf4be71e4341429675617ed4c234a6b42b4e1a8bcc/kbeacon_ble-1.0.0rc4.tar.gz", hash = "sha256:28ebd992c2894de0cbda866798602f8815e3606420444c239b642375f04d9da6", size = 10296, upload-time = "2026-03-24T07:05:12.826Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c3/01/c5b5dcb186bc150f2c5c3851c9737c97b173591d3aa5c9678943b2604668/kbeacon_ble-1.0.0rc5.tar.gz", hash = "sha256:5bdd84750e2411b46060c1ce3dda8b00c68fb7e3c07a20f7513bb9dbe109faa4", size = 11388, upload-time = "2026-08-12T08:59:14.721Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/1c/193eaaf6994ddc1505b4ed07797610de1ed84103e170fe0af0ef4e35ce3d/kbeacon_ble-1.0.0rc4-py3-none-any.whl", hash = "sha256:7faa116a7af51502c365d48476cbc9143231541d258a1e691a867c17e37028b2", size = 6494, upload-time = "2026-03-24T07:05:11.779Z" },
+    { url = "https://files.pythonhosted.org/packages/4c/80/084996d05290febe0489677a9fe72319112ce69b7f516db201b2a75f16bf/kbeacon_ble-1.0.0rc5-py3-none-any.whl", hash = "sha256:0c6576ec5ee60883a7897ea0c6f5013c662038bfe3b346a3ca04c7b0776a0785", size = 7037, upload-time = "2026-08-12T08:59:13.696Z" },
 ]
 
 [[package]]

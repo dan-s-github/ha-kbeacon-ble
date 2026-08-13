@@ -131,3 +131,40 @@ KBEACON_UID_TX_POWER_SERVICE_INFO = make_bluetooth_service_info(
     service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
     source="local",
 )
+
+# Test data with FEAA sensor frame (0x21) acceleration, unread-records,
+# reserved-field, and tick-counter fields (mask bits 3, 10, 12, 14):
+# - Acceleration X/Y/Z: 100 / -50 / 980 mg
+# - Unread records flags: 0x01, unread records: 5
+# - Reserved field: 0
+# - Tick counter: 42
+KBEACON_ACCEL_DIAGNOSTICS_SERVICE_INFO = make_bluetooth_service_info(
+    name="KBPro_Diag",
+    address="BC:57:29:02:45:A5",
+    rssi=-60,
+    service_data={
+        "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex(
+            "2154080064FFCE03D4010005000000002A"
+        )
+    },
+    manufacturer_data={},
+    service_uuids=["0000feaa-0000-1000-8000-00805f9b34fb"],
+    source="local",
+)
+
+# Real-world PU200 advertisement: FEAA sensor frame only, no service UUIDs
+# advertised (unlike the KBPro_* devices above), so discovery relies on the
+# manifest's name-scoped FEAA bluetooth matcher.
+KBEACON_PU200_SERVICE_INFO = make_bluetooth_service_info(
+    name="PU200",
+    address="D4:1C:55:42:3E:EA",
+    rssi=-86,
+    service_data={
+        "0000feaa-0000-1000-8000-00805f9b34fb": bytes.fromhex(
+            "2152070ce4150040800003400000000002"
+        )
+    },
+    manufacturer_data={},
+    service_uuids=[],
+    source="local",
+)

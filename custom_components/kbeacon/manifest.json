@@ -5,6 +5,11 @@
     {
       "connectable": true,
       "service_data_uuid": "00002080-0000-1000-8000-00805f9b34fb"
+    },
+    {
+      "connectable": false,
+      "local_name": "PU200*",
+      "service_data_uuid": "0000feaa-0000-1000-8000-00805f9b34fb"
     }
   ],
   "codeowners": [

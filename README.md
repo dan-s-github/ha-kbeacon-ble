@@ -14,7 +14,7 @@
 
 Home Assistant integration for KBeacon Bluetooth Low Energy (BLE) devices.
 
-This integration automatically discovers and monitors KBeacon BLE sensors through passive Bluetooth scanning. It supports temperature, humidity, battery percentage, battery voltage, illuminance, CO2, and UID Tx power monitoring.
+This integration automatically discovers and monitors KBeacon BLE sensors through passive Bluetooth scanning. It supports temperature, humidity, battery percentage, battery voltage, illuminance, CO2, acceleration, and diagnostic monitoring (UID Tx power, unread record count, and other beacon status fields).
 
 ## Features
 
@@ -27,7 +27,12 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
   - Battery Voltage (V)
   - Illuminance (lux)
   - CO2 (ppm)
+  - Acceleration X/Y/Z (m/s²)
   - UID Tx Power (dBm, diagnostic)
+  - Unread Records (diagnostic)
+  - Unread Records Flags (diagnostic, disabled by default)
+  - Sensor Reserved Field (diagnostic, disabled by default)
+  - Sensor Tick Counter (diagnostic, disabled by default)
 - **No YAML Configuration Required**: Devices are discovered through Bluetooth and added with the UI flow
 
 ## Requirements
@@ -67,9 +72,14 @@ The integration will automatically create sensor entities for:
 - Battery Voltage (disabled by default, can be enabled in entity settings)
 - Illuminance
 - CO2
+- Acceleration X/Y/Z
 - UID Tx Power (disabled by default, can be enabled in entity settings)
+- Unread Records
+- Unread Records Flags (disabled by default, can be enabled in entity settings)
+- Sensor Reserved Field (disabled by default, can be enabled in entity settings)
+- Sensor Tick Counter (disabled by default, can be enabled in entity settings)
 
-Illuminance and CO2 entities are only created after those values are first seen in advertisements from the device. Devices that never advertise light or CO2 data will not get those entities.
+Entities only appear for values the device actually broadcasts — for example, illuminance, CO2, and acceleration entities are only created once those values are first seen in advertisements from the device.
 
 ## Development (Devcontainer + Bluetooth)
 
