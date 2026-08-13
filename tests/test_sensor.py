@@ -6,10 +6,10 @@ from homeassistant.components.sensor import ATTR_STATE_CLASS
 from homeassistant.const import (
     ATTR_FRIENDLY_NAME,
     ATTR_UNIT_OF_MEASUREMENT,
-    CONCENTRATION_PARTS_PER_MILLION,
     LIGHT_LUX,
     PERCENTAGE,
     UnitOfElectricPotential,
+    UnitOfRatio,
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant
@@ -229,8 +229,7 @@ async def test_lux_and_co2_sensors(hass: HomeAssistant) -> None:
     assert co2_sensor is not None
     assert co2_sensor.state == "1000"
     assert (
-        co2_sensor.attributes[ATTR_UNIT_OF_MEASUREMENT]
-        == CONCENTRATION_PARTS_PER_MILLION
+        co2_sensor.attributes[ATTR_UNIT_OF_MEASUREMENT] == UnitOfRatio.PARTS_PER_MILLION
     )
 
     assert await hass.config_entries.async_unload(entry.entry_id)
