@@ -1136,7 +1136,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "kbeacon-ble" }]
+requires-dist = [{ name = "kbeacon-ble", specifier = ">=1.0.0rc5" }]
 
 [package.metadata.requires-dev]
 dev = [
