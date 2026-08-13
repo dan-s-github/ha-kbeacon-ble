@@ -17,12 +17,12 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
-    CONCENTRATION_PARTS_PER_MILLION,
     LIGHT_LUX,
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     EntityCategory,
     UnitOfElectricPotential,
+    UnitOfRatio,
     UnitOfTemperature,
 )
 from homeassistant.helpers.sensor import sensor_device_info_to_hass_device_info
@@ -38,6 +38,13 @@ if TYPE_CHECKING:
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 UID_TX_POWER_KEY = "uid_tx_power"
+UNREAD_RECORDS_FLAGS_KEY = "unread_records_flags"
+UNREAD_RECORDS_KEY = "unread_records"
+SENSOR_RESERVED_FIELD_KEY = "sensor_reserved_field"
+SENSOR_TICK_COUNTER_KEY = "sensor_tick_counter"
+ACCELERATION_AXIS_KEYS = ("acceleration_x", "acceleration_y", "acceleration_z")
+
+ACCELERATION_METERS_PER_SQUARE_SECOND = "m/s²"
 
 KBEACON_LIGHT_DEVICE_CLASS = getattr(
     KBeaconSensorDeviceClass,
@@ -59,7 +66,7 @@ SENSOR_DESCRIPTIONS = {
     ): SensorEntityDescription(
         key=(f"{KBeaconSensorDeviceClass.CO2}_{Units.CONCENTRATION_PARTS_PER_MILLION}"),
         device_class=SensorDeviceClass.CO2,
-        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     (KBeaconSensorDeviceClass.HUMIDITY, Units.PERCENTAGE): SensorEntityDescription(
@@ -99,6 +106,35 @@ CUSTOM_SENSOR_DESCRIPTIONS = {
         entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=False,
     ),
+    UNREAD_RECORDS_KEY: SensorEntityDescription(
+        key=UNREAD_RECORDS_KEY,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    UNREAD_RECORDS_FLAGS_KEY: SensorEntityDescription(
+        key=UNREAD_RECORDS_FLAGS_KEY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    SENSOR_RESERVED_FIELD_KEY: SensorEntityDescription(
+        key=SENSOR_RESERVED_FIELD_KEY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    SENSOR_TICK_COUNTER_KEY: SensorEntityDescription(
+        key=SENSOR_TICK_COUNTER_KEY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    **{
+        axis_key: SensorEntityDescription(
+            key=axis_key,
+            native_unit_of_measurement=ACCELERATION_METERS_PER_SQUARE_SECOND,
+            state_class=SensorStateClass.MEASUREMENT,
+            suggested_display_precision=3,
+        )
+        for axis_key in ACCELERATION_AXIS_KEYS
+    },
 }
 
 if KBEACON_LIGHT_DEVICE_CLASS is not None:

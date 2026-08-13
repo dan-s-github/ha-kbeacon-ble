@@ -10,7 +10,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.kbeacon.const import DOMAIN
 
-from . import KBEACON_SERVICE_INFO, NOT_KBEACON_SERVICE_INFO
+from . import KBEACON_PU200_SERVICE_INFO, KBEACON_SERVICE_INFO, NOT_KBEACON_SERVICE_INFO
 
 
 @pytest.fixture(autouse=True)
@@ -36,6 +36,23 @@ async def test_async_step_bluetooth_valid_device(hass: HomeAssistant) -> None:
     assert result2["title"] == "KBeacon 459F"
     assert result2["data"] == {}
     assert result2["result"].unique_id == "BC:57:29:02:45:9F"
+
+
+async def test_async_step_bluetooth_pu200_device(hass: HomeAssistant) -> None:
+    """Test discovery via bluetooth with a PU200 device (FEAA only, no UUIDs)."""
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN,
+        context={"source": config_entries.SOURCE_BLUETOOTH},
+        data=KBEACON_PU200_SERVICE_INFO,
+    )
+    assert result["type"] is FlowResultType.FORM
+    assert result["step_id"] == "bluetooth_confirm"
+    with patch("custom_components.kbeacon.async_setup_entry", return_value=True):
+        result2 = await hass.config_entries.flow.async_configure(
+            result["flow_id"], user_input={}
+        )
+    assert result2["type"] is FlowResultType.CREATE_ENTRY
+    assert result2["result"].unique_id == "D4:1C:55:42:3E:EA"
 
 
 async def test_async_step_bluetooth_not_kbeacon(hass: HomeAssistant) -> None:

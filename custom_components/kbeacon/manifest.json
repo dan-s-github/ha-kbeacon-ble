@@ -5,6 +5,11 @@
     {
       "connectable": true,
       "service_data_uuid": "00002080-0000-1000-8000-00805f9b34fb"
+    },
+    {
+      "connectable": false,
+      "local_name": "PU200*",
+      "service_data_uuid": "0000feaa-0000-1000-8000-00805f9b34fb"
     }
   ],
   "codeowners": [
@@ -18,7 +23,7 @@
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/dan-s-github/ha-kbeacon-ble/issues",
   "requirements": [
-    "kbeacon-ble"
+    "kbeacon-ble>=1.0.0rc5"
   ],
   "version": "1.0.0rc0"
 }
