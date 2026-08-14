@@ -36,7 +36,7 @@ dev = [
     # "rely on Home Assistant's dependency set" policy below: Home Assistant
     # 2026.7.0's bluetooth component hard-requires habluetooth==6.25.1, and
     # loading it transitively imports the usb component (serialx==1.8.2),
-    # which in turn imports its ESPHome serial platform (aioesphomeapi==45.3.1)
+    # which in turn imports its ESPHome serial platform (aioesphomeapi==45.8.0)
     # at module scope. None of these are declared as install-time package
     # dependencies of the homeassistant wheel, so uv can't resolve them
     # without an explicit pin.
