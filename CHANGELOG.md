@@ -1,3 +1,10 @@
+## v1.0.0rc1 (2026-08-16)
+
+### Feat
+
+- add BLE matcher for KBPro devices
+- update kbeacon-ble to rc5 and add new sensors (#63)
+
 ## v1.0.0rc0 (2026-04-26)
 
 ### Feat
