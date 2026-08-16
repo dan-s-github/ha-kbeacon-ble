@@ -101,6 +101,8 @@ Entities only appear for values the device actually broadcasts — for example, 
 
 This integration supports KBeacon BLE devices that broadcast Eddystone telemetry data with manufacturer ID 33 (0x21).
 
+KBPro and PU200 devices are identified using the Eddystone service UUID (`0xFEAA`), which is a generic identifier shared by many Bluetooth beacon products, not just KBeacon devices. To avoid matching unrelated Eddystone beacons, discovery for these devices is additionally restricted by advertised name (`KBPro*`, `PU200*`).
+
 ## Troubleshooting
 
 ### Device Not Discovered
@@ -109,6 +111,7 @@ This integration supports KBeacon BLE devices that broadcast Eddystone telemetry
 - Check that Bluetooth is enabled in Home Assistant
 - Verify the device is broadcasting in Eddystone mode
 - Try restarting the Bluetooth adapter
+- KBPro and PU200 devices are matched by advertised name (`KBPro*`, `PU200*`), and that name is only present in the scan response, not the primary advertisement. If you're discovering these devices through a Bluetooth proxy (e.g. ESPHome), set `active: true` on the proxy so it requests scan response data. Passive-only proxies will never see the name and won't trigger initial discovery. Once the device is added, subsequent tracking does not require active scanning.
 
 ### Sensors Not Updating
 
