@@ -103,6 +103,15 @@ This integration supports KBeacon BLE devices that broadcast Eddystone telemetry
 
 KBPro and PU200 devices are identified using the Eddystone service UUID (`0xFEAA`), which is a generic identifier shared by many Bluetooth beacon products, not just KBeacon devices. To avoid matching unrelated Eddystone beacons, discovery for these devices is additionally restricted by advertised name (`KBPro*`, `PU200*`).
 
+## Where to Buy
+
+KBeacon devices are manufactured by [Beacon Master (Suzhou) Technology Co., Ltd. (KKM)][kkm]. They can be purchased from:
+
+- [Kiwi Warmer Online Store][kiwi-warmer] — New Zealand and Australia
+- [KKM Store][kkm] — China
+
+This project is independently maintained and not officially affiliated with either vendor. Kiwi Warmer provided devices used in developing this integration.
+
 ## Troubleshooting
 
 ### Device Not Discovered
@@ -171,3 +180,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [hacs]: https://github.com/hacs/integration
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=flat&logo=homeassistant&logoColor=white
 [issues]: https://github.com/dan-s-github/ha-kbeacon-ble/issues
+[kiwi-warmer]: https://www.kiwi-warmer.co.nz/shop/
+[kkm]: https://www.kkmcn.com
