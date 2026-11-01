@@ -66,6 +66,25 @@ async def test_async_step_bluetooth_not_kbeacon(hass: HomeAssistant) -> None:
     assert result["reason"] == "not_supported"
 
 
+async def test_async_step_bluetooth_not_kbeacon_checked_before_unique_id(
+    hass: HomeAssistant,
+) -> None:
+    """Test unsupported devices are rejected before the unique_id is claimed."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id=NOT_KBEACON_SERVICE_INFO.address,
+    )
+    entry.add_to_hass(hass)
+
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN,
+        context={"source": config_entries.SOURCE_BLUETOOTH},
+        data=NOT_KBEACON_SERVICE_INFO,
+    )
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "not_supported"
+
+
 async def test_async_step_user_no_devices_found(hass: HomeAssistant) -> None:
     """Test setup from service info cache with no devices found."""
     result = await hass.config_entries.flow.async_init(
