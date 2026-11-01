@@ -1,3 +1,14 @@
+## v1.0.0rc2 (2026-11-01)
+
+### Fix
+
+- reject unsupported devices before claiming the unique_id
+- use literal text instead of translation key references
+
+### Refactor
+
+- store the coordinator in entry.runtime_data
+
 ## v1.0.0rc1 (2026-08-16)
 
 ### Feat

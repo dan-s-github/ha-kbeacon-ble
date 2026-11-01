@@ -1109,7 +1109,7 @@ wheels = [
 
 [[package]]
 name = "ha-kbeacon-ble"
-version = "1.0.0rc1"
+version = "1.0.0rc2"
 source = { editable = "." }
 dependencies = [
     { name = "kbeacon-ble" },
