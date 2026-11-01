@@ -18,8 +18,8 @@ This integration automatically discovers and monitors KBeacon BLE sensors throug
 
 ## Features
 
-- **Automatic Discovery**: Automatically detects KBeacon BLE devices in range
-- **Passive Scanning**: Uses Bluetooth passive scanning mode for efficient battery usage
+- **Automatic Discovery**: Automatically detects KBeacon BLE devices in range (KBPro and PU200 need active scanning for this; see [Device Not Discovered](#device-not-discovered))
+- **Passive Scanning**: Uses Bluetooth passive scanning mode for efficient battery usage once a device is added
 - **Multiple Sensor Types**:
   - Temperature (°C)
   - Humidity (%)
@@ -121,6 +121,7 @@ This project is independently maintained and not officially affiliated with eith
 - Verify the device is broadcasting in Eddystone mode
 - Try restarting the Bluetooth adapter
 - KBPro and PU200 devices are matched by advertised name (`KBPro*`, `PU200*`), and that name is only present in the scan response, not the primary advertisement. If you're discovering these devices through a Bluetooth proxy (e.g. ESPHome), set `active: true` on the proxy so it requests scan response data. Passive-only proxies will never see the name and won't trigger initial discovery. Once the device is added, subsequent tracking does not require active scanning.
+- With passive scanning only, add the device manually instead: go to **Settings** -> **Devices & Services** -> **Add Integration** -> **KBeacon BLE** and pick it from the list. The list is built from the advertisement data alone, so it doesn't need the name.
 
 ### Sensors Not Updating
 
