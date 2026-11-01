@@ -6,7 +6,7 @@
 
 [![Home Assistant][ha-shield]][ha]
 [![Python Version][python-shield]][python]
-[![License][license-shield]](LICENSE)
+[![License][license-shield]](https://github.com/dan-s-github/ha-kbeacon-ble/blob/main/LICENSE)
 
 [![Tests][tests-shield]][tests]
 [![Code Style: Ruff][ruff-shield]][ruff]
@@ -148,11 +148,11 @@ If logs mention `passive scanning on Linux requires BlueZ >= 5.56 with --experim
 
 ## Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute to this project.
+Contributions are welcome! Please read [CONTRIBUTING.md](https://github.com/dan-s-github/ha-kbeacon-ble/blob/main/CONTRIBUTING.md) for details on how to contribute to this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/dan-s-github/ha-kbeacon-ble/blob/main/LICENSE) file for details.
 
 ## Support
 

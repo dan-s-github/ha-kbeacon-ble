@@ -4,7 +4,7 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-UV_REQUIRED_VERSION="0.10.6"
+UV_REQUIRED_VERSION="0.13.6"
 
 # Install or update uv package manager to the pinned version
 if ! command -v uv &> /dev/null; then
